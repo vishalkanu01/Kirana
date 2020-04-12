@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:kiranaapp/locator.dart';
 import 'package:kiranaapp/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,9 +1,12 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kiranaapp/models/food.dart';
 import 'package:kiranaapp/models/post.dart';
 import 'package:kiranaapp/models/user.dart';
 import 'package:flutter/services.dart';
+import 'package:kiranaapp/notifier/food_notifier.dart';
+import 'package:kiranaapp/ui/views/category/detergentPage.dart';
+import 'package:uuid/uuid.dart';
 
 class FirestoreService {
   final CollectionReference _usersCollectionReference =
@@ -107,5 +110,112 @@ class FirestoreService {
 
       return e.toString();
     }
+  }
+}
+
+getGroceries(FoodNotifier foodNotifier) async {
+  QuerySnapshot snapshot = await Firestore.instance
+      .collection('Foods')
+      .where('category', isEqualTo: 'Groceries')
+      .getDocuments();
+
+  List<Food> _groceriesList = [];
+
+  snapshot.documents.forEach((document) {
+    Food food = Food.fromMap(document.data);
+    _groceriesList.add(food);
+  });
+
+  foodNotifier.groceriesList = _groceriesList;
+}
+
+getDetergent(FoodNotifier foodNotifier) async {
+  QuerySnapshot snapshot = await Firestore.instance
+      .collection('Foods')
+      .where('category', isEqualTo: 'Detergent')
+      .getDocuments();
+
+  List<Food> _detergentList = [];
+
+  snapshot.documents.forEach((document) {
+    Food food = Food.fromMap(document.data);
+    _detergentList.add(food);
+  });
+
+  foodNotifier.detergentList = _detergentList;
+}
+
+getInsecticide(FoodNotifier foodNotifier) async {
+  QuerySnapshot snapshot = await Firestore.instance
+      .collection('Foods')
+      .where('category', isEqualTo: 'Insecticide')
+      .getDocuments();
+
+  List<Food> _insecticideList = [];
+
+  snapshot.documents.forEach((document) {
+    Food food = Food.fromMap(document.data);
+    _insecticideList.add(food);
+  });
+
+  foodNotifier.insecticideList = _insecticideList;
+}
+
+getSnack(FoodNotifier foodNotifier) async {
+  QuerySnapshot snapshot = await Firestore.instance
+      .collection('Foods')
+      .where('category', isEqualTo: 'Snack')
+      .getDocuments();
+
+  List<Food> _snackList = [];
+
+  snapshot.documents.forEach((document) {
+    Food food = Food.fromMap(document.data);
+    _snackList.add(food);
+  });
+
+  foodNotifier.snackList = _snackList;
+}
+
+getHerb(FoodNotifier foodNotifier) async {
+  QuerySnapshot snapshot = await Firestore.instance
+      .collection('Foods')
+      .where('category', isEqualTo: 'Herb')
+      .getDocuments();
+
+  List<Food> _herbList = [];
+
+  snapshot.documents.forEach((document) {
+    Food food = Food.fromMap(document.data);
+    _herbList.add(food);
+  });
+
+  foodNotifier.herbList = _herbList;
+}
+
+getCosmetic(FoodNotifier foodNotifier) async {
+  QuerySnapshot snapshot = await Firestore.instance
+      .collection('Foods')
+      .where('category', isEqualTo: 'Cosmetic')
+      .getDocuments();
+
+  List<Food> _cosmeticList = [];
+
+  snapshot.documents.forEach((document) {
+    Food food = Food.fromMap(document.data);
+    _cosmeticList.add(food);
+  });
+
+  foodNotifier.cosmeticList = _cosmeticList;
+}
+class ProductService {
+  Firestore _firestore = Firestore.instance;
+  String ref = 'Orders';
+
+  void uploadProduct(Map<String, dynamic> data) {
+    var id = Uuid();
+    String productId = id.v1();
+    data["id"] = productId;
+    _firestore.collection(ref).document(productId).setData(data);
   }
 }
